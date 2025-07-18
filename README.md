@@ -33,6 +33,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	defer file.Close()
+
 	decoder := csv.NewDecoder(file)
 
 	for {
@@ -46,6 +48,46 @@ func main() {
 		fmt.Println(s)
 	}
 }
+```
+
+### Encoder
+```go
+package main
+
+import (
+    "os"
+	"github.com/VincentBrodin/csv"
+)
+
+type MyStruct struct {
+	Name  string `csv:"name"`
+	Email string `csv:"email"`
+	Age   int    `csv:"age"`
+}
+
+func main() {
+	file, err := os.Create("myfile.csv")
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	encoder := csv.NewEncoder(file)
+
+	myStruct := MyStruct{
+		Name:  "John Doe",
+		Email: "john.doe@example.com",
+		Age:   21,
+	}
+    if err := encoder.Encode(myStruct); err != nil {
+        panic(err)
+    }
+
+    if err := encoder.Flush(); err != nil {
+        panic(err)
+    }
+}
+
 ```
 
 ## Contributing
