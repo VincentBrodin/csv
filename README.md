@@ -54,7 +54,10 @@ func main() {
 ```go
 package main
 
-import "os"
+import (
+    "os"
+	"github.com/VincentBrodin/csv"
+)
 
 type MyStruct struct {
 	Name  string `csv:"name"`
@@ -69,7 +72,7 @@ func main() {
 	}
 	defer file.Close()
 
-	encoder := NewEncoder(file)
+	encoder := csv.NewEncoder(file)
 
 	myStruct := MyStruct{
 		Name:  "John Doe",
