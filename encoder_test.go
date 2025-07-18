@@ -29,6 +29,13 @@ func TestEncodeStrings(t *testing.T) {
 		Subscribed:   true,
 	}
 
-	encoder.Encode(s)
-	t.Log(buf.String())
+	if err := encoder.Encode(s); err != nil {
+		t.Logf("Failed to encode struct, err:%s\n", err.Error())
+		t.Fail()
+	}
+	if err := encoder.Flush(); err != nil {
+		t.Logf("Failed to flush writer, err:%s\n", err.Error())
+		t.Fail()
+	}
+	t.Logf("\n%s\n", buf.String())
 }

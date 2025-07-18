@@ -79,7 +79,13 @@ func main() {
 		Email: "john.doe@example.com",
 		Age:   21,
 	}
-	encoder.Encode(myStruct)
+    if err := encoder.Encode(myStruct); err != nil {
+        panic(err)
+    }
+
+    if err := encoder.Flush(); err != nil {
+        panic(err)
+    }
 }
 
 ```

@@ -18,14 +18,18 @@ func NewEncoder(w io.Writer) *Encoder {
 	}
 }
 
-func (enc *Encoder) Encode(in any) {
+func (enc *Encoder) Encode(in any) error {
 	if enc.headers == nil {
 		enc.headers = getHeaders(in)
 		enc.writer.Write(enc.headers)
 	}
 
-	enc.writer.Write(marshalCsvRecord(in, enc.headers))
+	return enc.writer.Write(marshalCsvRecord(in, enc.headers))
+}
+
+func (enc *Encoder) Flush() error {
 	enc.writer.Flush()
+	return enc.writer.Error()
 }
 
 func getHeaders(in any) []string {
